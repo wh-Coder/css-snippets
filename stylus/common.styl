@@ -1,0 +1,139 @@
+// npm install -g stylus
+// stylus -w index.styl -o dist
+
+@import "partials/reset"
+$colors = {
+    white: white,
+    black: black,
+    bg: #efefef,
+    bd: #9e9e9e
+}
+
+
+$directions = {t: top, r: right, b: bottom, l: left, v: top bottom, h: left right}
+
+/****************************
+*        字体大小            *
+* **************************/
+.fz-0
+    font-size 0px
+for size in range(12, 24, 2)
+    .fz-{size}
+        font-size size px
+
+/****************************
+*   文字颜色，背景色，边框    *
+* **************************/
+for $clazz, $color in $colors
+	.{$clazz}
+		if match('bg', $clazz)
+			background-color $color
+		else if match('bd', $clazz)
+			border(a, $color)
+		else
+			color $color
+
+/****************************
+*   圆角                    *
+* **************************/
+for $size in range(0, 10, 2)
+    .br-{$size}
+        border-radius: $size px
+
+
+/****************************
+*        常用间距            *
+* **************************/
+gap($size)
+    if $size
+        $suffix = - $size
+    else
+        $size = 12
+        $suffix = ''
+
+    .mg{$suffix}
+        margin $size px
+    .pd{$suffix}
+        padding $size px
+    for $d, $dirs in $directions
+        .mg{$d}{$suffix}
+            for $dir in $dirs
+                margin-{$dir} $size px
+        .pd{$d}{$suffix}
+            for $dir in $dirs
+                padding-{$dir} $size px
+for $size in range(0, 40, 2)
+    gap($size)
+gap(0)
+/****************************
+*           position        *
+* **************************/
+for $pos in relative absolute fixed
+    .{$pos}
+        position: $pos
+
+
+/****************************
+*          display          *
+* **************************/
+for $dis in block inline-block none inline
+    .{$dis}
+        display: $dis !important
+
+/****************************
+*          align            *
+* **************************/
+.center, .txt-center
+    text-align: center
+
+for $dis in right center left
+    .txt-{$dis}
+        text-align: $dis !important
+.center-h
+    position: relative
+    left: 50%
+    transform: translate3d(-50%, 0, 0)
+.center-v
+    position: relative
+    top: 50%
+    transform: translate3d(0, -50%, 0)
+.middle
+    vertical-align middle
+
+/****************************
+*          flex            *
+* **************************/
+.flex
+    display flex
+    justify-content space-between
+    align-items center
+    for $flexd in start center end
+        &.{$flexd}
+            if $flexd == center
+                justify-content $flexd
+            else
+                justify-content flex- + $flexd
+/****************************
+*          flex            *
+* **************************/
+.flex-v
+    display flex
+    flex-direction column
+    for $flexd in start center end
+        &.{$flexd}
+            if $flexd == center
+                justify-content $flexd
+            else
+                justify-content flex- + $flexd
+.flex-1
+    flex 1 0 0%
+
+/****************************
+*        clear-fix          *
+* **************************/
+.clear-fix
+    zoom 1
+    &::after
+        content ''
+        display block
+        clear both
